@@ -1,0 +1,14 @@
+### GET request to example server
+GET 192.168.31.31:8080/todos HTTP/1.1
+
+###
+GET 192.168.31.31:8080/health
+
+###
+
+POST 192.168.31.31:8080/add
+
+{
+    "name": "test",
+    "state": false
+}

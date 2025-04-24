@@ -10,9 +10,17 @@ import (
 
 func Get(s *Server) {
 	s.mux.HandleFunc("/todos", func(w http.ResponseWriter, r *http.Request) {
-		todos, _ := s.db.GetAll()
-		ret, _ := json.Marshal(todos)
-		w.Write([]byte(ret))
+		var todos []data.Todo
+		s.db.Find(&todos)
+
+		ret, err := json.Marshal(todos)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(ret)
 	})
 }
 
@@ -25,14 +33,7 @@ func Post(s *Server) {
 		if err != nil {
 			return
 		}
-		err = s.db.Create(data.Todo{
-			Id:    0,
-			Name:  todo.Name,
-			State: todo.State,
-		})
-		if err != nil {
-			return
-		}
+		s.db.Create(&todo)
 
 	})
 }
@@ -46,7 +47,7 @@ func Update(s *Server) {
 		if err != nil {
 			return
 		}
-		err = s.db.Update(todo)
+		s.db.Model(&todo).Updates(todo)
 
 	})
 

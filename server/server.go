@@ -1,20 +1,14 @@
 package server
 
 import (
-	"gohttp101/data"
+	"gorm.io/gorm"
 	"net/http"
 )
 
 type Server struct {
-	db data.Database
+	db *gorm.DB
 	http.Server
 	mux http.ServeMux
-}
-
-func NewServer(db data.Database) *Server {
-	return &Server{
-		db: db,
-	}
 }
 
 func (s *Server) Start() error {
@@ -40,7 +34,7 @@ func healthCheck(s *Server) {
 	})
 }
 
-func GetServer(db data.Database) *Server {
+func GetServer(db *gorm.DB) *Server {
 	s := &Server{
 		db: db,
 	}

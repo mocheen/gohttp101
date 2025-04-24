@@ -1,7 +1,7 @@
 package data
 
 type Todo struct {
-	Id    int    `json:"id"`
+	ID    int    `json:"id"`
 	Name  string `json:"name"`
-	State bool   `json:"state"`
+	State int    `json:"state"`
 }
